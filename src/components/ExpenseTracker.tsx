@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
-import ExpenseForm from "./ExpenseForm"; // ✅ Ensure correct import
+import ExpenseForm from "./ExpenseForm";
 
 type Expense = {
   id: string;
@@ -16,7 +16,7 @@ type Expense = {
 export default function ExpenseTracker() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
 
-  // 🔹 Firestore se expenses fetch karna
+  // 🔹 Fetch expenses from Firestore
   useEffect(() => {
     const fetchExpenses = async () => {
       const querySnapshot = await getDocs(collection(db, "expenses"));

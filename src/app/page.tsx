@@ -1,4 +1,4 @@
-import ExpenseTracker from "../components/ExpenseTracker"; // Adjust the path as necessary
+import ExpenseTracker from "../components/ExpenseTracker";
 
 export default function Home() {
   return (
