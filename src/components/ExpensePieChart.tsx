@@ -65,20 +65,20 @@ const ExpensePieChart = () => {
       title: {
         display: true,
         text: "Category-wise Spending",
-        font: { size: 18, weight: "bold" },
+        font: { size: 18, weight: 700 },
         color: "#333",
       },
       legend: {
         display: true,
         position: "bottom" as const,
         labels: {
-          font: { size: 14 },
+          font: { size: 14, weight: 400 },
           color: "#555",
         },
       },
       datalabels: {
         color: "#fff",
-        font: { weight: "bold", size: 14 },
+        font: { weight: 700, size: 14 },
         formatter: (value: number) => {
           const percentage = ((value / totalAmount) * 100).toFixed(1);
           return `${percentage}%`;
