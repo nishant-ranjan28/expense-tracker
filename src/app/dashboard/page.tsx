@@ -8,8 +8,8 @@ import BarChart from "../../components/charts/BarChart";
 
 export default function DashboardPage() {
   const [expenses, setExpenses] = useState<any[]>([]);
+  const [filter, setFilter] = useState("monthly");
 
-  // ✅ Firestore se Expenses Fetch Karna
   useEffect(() => {
     const fetchExpenses = async () => {
       const querySnapshot = await getDocs(collection(db, "expenses"));
@@ -23,8 +23,26 @@ export default function DashboardPage() {
     fetchExpenses();
   }, []);
 
-  // ✅ Category-wise Summarization (Pie Chart)
-  const categoryData = expenses.reduce((acc: any, expense) => {
+  // Filter expenses based on selected filter (weekly or monthly)
+  const getFilteredExpenses = () => {
+    const now = new Date();
+    const weekAgo = new Date();
+    weekAgo.setDate(now.getDate() - 7);
+    const monthAgo = new Date();
+    monthAgo.setMonth(now.getMonth() - 1);
+
+    return expenses.filter((expense) => {
+      const expenseDate = new Date(expense.date);
+      return filter === "weekly"
+        ? expenseDate >= weekAgo
+        : expenseDate >= monthAgo;
+    });
+  };
+
+  const filteredExpenses = getFilteredExpenses();
+
+  // Category-wise Summarization (Pie Chart)
+  const categoryData = filteredExpenses.reduce((acc: any, expense) => {
     const { category, amount } = expense;
     acc[category] = (acc[category] || 0) + amount;
     return acc;
@@ -37,8 +55,8 @@ export default function DashboardPage() {
     })
   );
 
-  // ✅ Date-wise Summarization (Bar Chart)
-  const dateData = expenses.reduce((acc: any, expense) => {
+  // Date-wise Summarization (Bar Chart)
+  const dateData = filteredExpenses.reduce((acc: any, expense) => {
     const { date, amount } = expense;
     acc[date] = (acc[date] || 0) + amount;
     return acc;
@@ -52,6 +70,24 @@ export default function DashboardPage() {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">📊 Dashboard</h1>
+      <div className="mb-4">
+        <button
+          className={`px-4 py-2 rounded-lg mr-2 ${
+            filter === "weekly" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => setFilter("weekly")}
+        >
+          Weekly Report
+        </button>
+        <button
+          className={`px-4 py-2 rounded-lg ${
+            filter === "monthly" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => setFilter("monthly")}
+        >
+          Monthly Report
+        </button>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <PieChart data={pieChartData} />
         <BarChart data={barChartData} />
