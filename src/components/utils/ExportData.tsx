@@ -4,8 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { CSVLink } from "react-csv";
-import PieChart from "../../components/charts/PieChart";
-import BarChart from "../../components/charts/BarChart";
 
 export default function ExportData({ expenses, pieChartData, barChartData }) {
   const [showModal, setShowModal] = useState(false);
@@ -38,7 +36,7 @@ export default function ExportData({ expenses, pieChartData, barChartData }) {
   // ✅ Automatically trigger CSV download when exportType is "csv"
   useEffect(() => {
     if (exportType === "csv" && csvLinkRef.current) {
-      csvLinkRef.current.click();
+      csvLinkRef.current.link.click();
       setExportType(null);
     }
   }, [exportType]);
@@ -74,14 +72,16 @@ export default function ExportData({ expenses, pieChartData, barChartData }) {
   };
 
   return (
-    <div>
-      {/* 📤 Export Button */}
-      <button
-        onClick={() => setShowModal(true)}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md"
-      >
-        📤 Export Data
-      </button>
+    <div className="flex flex-col space-y-4">
+      {/* Top Bar with Export Button */}
+      <div className="flex justify-end items-center mb-4">
+        <button
+          onClick={() => setShowModal(true)}
+          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        >
+          📤 Export Data
+        </button>
+      </div>
 
       {/* 🔹 Export Modal */}
       {showModal && (
@@ -120,12 +120,6 @@ export default function ExportData({ expenses, pieChartData, barChartData }) {
           className="hidden"
         />
       )}
-
-      {/* 📊 Charts */}
-      <div id="charts-section" className="mt-6">
-        <PieChart data={pieChartData} />
-        <BarChart data={barChartData} />
-      </div>
     </div>
   );
 }
