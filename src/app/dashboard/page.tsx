@@ -89,8 +89,26 @@ export default function DashboardPage() {
         </button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <PieChart data={pieChartData} />
-        <BarChart data={barChartData} />
+        {filteredExpenses.length > 0 ? (
+          <>
+            <div className="bg-white p-6 shadow-md rounded-lg">
+              <h2 className="text-xl font-bold mb-4 text-center">
+                📅 Monthly Expenses
+              </h2>
+              <PieChart data={pieChartData} />
+            </div>
+            <div className="bg-white p-6 shadow-md rounded-lg">
+              <h2 className="text-xl font-bold mb-4 text-center">
+                📆 Weekly Expenses
+              </h2>
+              <BarChart data={barChartData} />
+            </div>
+          </>
+        ) : (
+          <div className="col-span-2 text-center text-gray-500">
+            No expenses available for the selected period.
+          </div>
+        )}
       </div>
     </div>
   );
