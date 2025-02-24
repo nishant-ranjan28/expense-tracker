@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@types/firebase": "^2.4.32",
+    "@types/firebase": "^3.2.3",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-csv": "^1.1.10",
