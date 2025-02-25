@@ -36,7 +36,7 @@ export default function ExportData({ expenses, pieChartData, barChartData }) {
   // ✅ Automatically trigger CSV download when exportType is "csv"
   useEffect(() => {
     if (exportType === "csv" && csvLinkRef.current) {
-      csvLinkRef.current.link.click();
+      csvLinkRef.current.click();
       setExportType(null);
     }
   }, [exportType]);
