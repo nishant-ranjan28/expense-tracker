@@ -1,41 +1,42 @@
-import { useState } from "react";
-import { db } from "../../firebase";
-import { collection, addDoc } from "firebase/firestore";
+"use client";
+import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const ExpenseForm = () => {
-  const [amount, setAmount] = useState("");
+type ExpenseFormProps = {
+  onExpenseAdded: () => void;
+};
+
+export default function ExpenseForm({ onExpenseAdded }: ExpenseFormProps) {
   const [category, setCategory] = useState("");
+  const [amount, setAmount] = useState(0);
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!amount || !category || !date) {
-      alert("Please fill all required fields!");
-      return;
-    }
-
-    const newExpense = {
-      amount: Number(amount),
-      category,
-      date: new Date(date).toISOString(),
-      description,
-      createdAt: new Date().toISOString(),
-    };
-
+    setLoading(true);
     try {
-      const docRef = await addDoc(collection(db, "expenses"), newExpense);
-      setAmount("");
+      const res = await fetch("/api/expenses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category, amount, date, description }),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to add expense");
+      }
+      onExpenseAdded(); // Trigger a re-fetch in the parent after successful addition
       setCategory("");
+      setAmount(0);
       setDate("");
       setDescription("");
       toast.success("Expense added successfully!");
     } catch (error) {
-      console.error("❌ Error adding expense:", error);
+      console.error(error);
       toast.error("Error adding expense!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,8 +57,8 @@ const ExpenseForm = () => {
           <input
             type="number"
             placeholder="Enter amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            value={amount === 0 ? "" : amount}
+            onChange={(e) => setAmount(Number(e.target.value))}
             className="w-full p-4 bg-gray-900 text-white rounded-xl border border-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
             required
           />
@@ -110,8 +111,9 @@ const ExpenseForm = () => {
         <button
           type="submit"
           className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition transform hover:scale-105 shadow-lg"
+          disabled={loading}
         >
-          🚀 Add Expense
+          {loading ? "Adding..." : "🚀 Add Expense"}
         </button>
 
         <div className="absolute -top-6 -right-6 w-12 h-12 bg-blue-500 rounded-full animate-pulse"></div>
@@ -120,6 +122,4 @@ const ExpenseForm = () => {
       <ToastContainer />
     </div>
   );
-};
-
-export default ExpenseForm;
+}
