@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@types/jspdf": "^2.0.0",
-    "autoprefixer": "^10.4.20",
+    "autoprefixer": "^10.4.21",
     "chart.js": "^4.4.8",
     "chartjs-plugin-datalabels": "^2.2.0",
     "firebase": "^11.4.0",
