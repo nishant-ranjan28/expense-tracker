@@ -27,9 +27,9 @@ const Sidebar = () => {
           </p>
         </Link>
 
-        <Link href="/dashboard/reports">
+        <Link href="/reports">
           <p
-            className={`p-3 rounded-lg ${pathname === "/dashboard/reports" ? "bg-gray-600" : "hover:bg-gray-700"}`}
+            className={`p-3 rounded-lg ${pathname === "/reports" ? "bg-gray-600" : "hover:bg-gray-700"}`}
           >
             📅 Reports
           </p>

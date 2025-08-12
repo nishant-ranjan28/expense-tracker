@@ -5,7 +5,14 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { CSVLink } from "react-csv";
 
-export default function ExportData({ expenses, pieChartData, barChartData }) {
+type ExportDataProps = {
+  className?: string;
+  expenses: any[];
+  pieChartData: { category: string; amount: number }[];
+  barChartData: { date: string; amount: number }[];
+};
+
+export default function ExportData({ expenses, pieChartData, barChartData, className }: ExportDataProps) {
   const [showModal, setShowModal] = useState(false);
   const [exportType, setExportType] = useState<string | null>(null);
   const csvLinkRef = useRef<CSVLink & HTMLAnchorElement>(null);
@@ -77,7 +84,7 @@ export default function ExportData({ expenses, pieChartData, barChartData }) {
       <div className="flex justify-end items-center mb-4">
         <button
           onClick={() => setShowModal(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          className={`bg-blue-500 text-white px-4 py-2 rounded-md ${className ?? ""}`}
         >
           📤 Export Data
         </button>
