@@ -1,5 +1,6 @@
+"use client";
 import { useState, useEffect } from "react";
-import { db } from "../../firebase";
+import { db } from "@/lib/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 
 const ExpenseList = () => {

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { db } from "../../../../firebase";
+import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 const SummaryCards = ({ filter }: { filter: "weekly" | "monthly" }) => {

@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { db } from "../../firebase";
+import { db } from "@/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
